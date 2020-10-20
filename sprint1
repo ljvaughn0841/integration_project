@@ -1,0 +1,321 @@
+# Lou Vaughn
+# The purpose of this program is to assist decision making in groups
+
+# originally this was supposed to be simple where i would just do the math bits for each part
+# but i ended up trying to go ahead and so its bit of a mess that i couldnt finish
+# selecting 1 person will just skip you to the end
+# and for 2-8 people i ran into a some issues when you just add up scores and compare thus couldnt finish
+
+'''
+it said to add a coment explaining some operaters so here we go
+
+for numeric operators
++ addition
+- subtraction
+* multiplication
+/ division
+% modulus aka remainder from long division
+** power or exponential
+// floor division aka intiger division
+
+for string operators
+* duplicate or repeat
++ just puts them together no spaces
+
+'''
+
+
+'''
+Main menu for selecting modes
+Potential future modes are random, random weight?, weighted, 0?, and weighted 0.
+0 would give the each player the ability to veto one option
+Weighted modes would use mult instead of add to give higher numbers higher values.
+'''
+
+mode=0 # mode 0 is main menu
+# not sure if this best way of navigating but i think i heard break frowned upon so idk
+while mode== 0:
+    print ("\nGreetings, Welcome to the Decision Maker.") #\n to add redability
+    print ("Please select a mode by entering it's coresponding number.")
+    print ("1. Normal")
+    
+    mode = int(input("Mode: "))
+    # if input for mode has int you shouldnt glitch to rate mode
+    #just realized software robustness wants it to not crash if string is inputed so
+    # i may need to try something else for most of the int things
+    
+    while mode == 1:
+        print("\nYou have selected Normal Mode!")
+        print ("Enter number of players. To go back to the main menu enter 0.")
+        people = int(input ("Enter number of people: "))
+        persons = people # for later use because i messed it up by using people in everything when i need number of people
+        # find a way to do this that would allow for more players with less repetition?
+        # i am keeping it at 8 for now as that is how many people can play smash bros
+        if people == 1:
+            # when figuring out random mode make random comments making fun of user
+            print ("Hello Mrs. Robinson")
+            
+            mode = 'rate'
+        elif people > 1 and people <=8:
+            print ("\nYou have selected" , people , "people.")
+            print ("If this is incorrect enter zero to go back")
+            print ("\nEnter up to 10 options seperated by a comma then a space.")
+            print ("Example: one, two, three, four")
+            op = input("\nOptions: ")
+
+            # found the list function by clicking around in integration project and trying random code
+            # because i saw something like what im looking for used in class found list in
+            # but that didnt work cuz it seperated it all up so
+            # PCEP Exam block #4: Data Collections – Lists, Tuples, and Dictionaries
+            print (op)
+
+            number_of_options = op.count(', ') + 1
+
+            if number_of_options <=10 and number_of_options > 1:
+                # counts the number of options by looking at the seperations and adding one
+                # couldnt figure this bit out till i googled it found some awnsers at
+                # https://www.w3schools.com/python/ref_string_count.asp
+                
+                # found way to seperate the string into multiple bits with .split in
+                # Think Python: How to Think Like a Computer Scientist 10.9 Lists and strings.
+                delimiter = ', '
+                options = op.split(delimiter)
+                print (options)
+
+    # what i need to do next is have it take people and repeat each option for people
+    # so everyone can enter 1-10 score but without writing over others/own scores
+
+                x = 0 # so options[0] can go to the first string because programming be like that
+
+                # to stop loops from erasing the score the scores will add into a dif value
+                # this is just initializing them
+                score_1 = []
+                score_2 = []
+                score_3 = []
+                score_4 = []
+                score_5 = []
+                score_6 = []
+                score_7 = []
+                score_8 = []
+
+    # IMPORTANT later try to change it so person 1 is person 1 and so on
+
+                while people <= 8 and people > 7:
+                    print ("\nPerson #1")
+                    print ("Based on how much you would like to" , options[x] + ".") #Theres the string plus thing
+                    print ("Enter a whole number scored 1-10")
+                    score = int(input("\n1-10 Score: "))
+                    if score >=1 and score <=10:
+                        
+                        people = people - 1 / number_of_options # makes it so it can cound down to remove a person
+
+                        score_1.append(score) # getting a list of scores for first person
+                        
+                        x += 1 # theres the fancy assignment operator += so it adds 1 to x
+                    else:
+                        print ("\nINVALID OPTION")
+                        
+                x = 0 # resets x so it can count down options again
+                while people <= 7 and people > 6:
+                    print ("\nPerson #2")
+                    print ("Based on how much you would like to" , options[x] + ".") 
+                    print ("Enter a whole number scored 1-10")
+                    score = int(input("\n1-10 Score: "))
+                    if score >=1 and score <=10:
+                        score_2.append(score)
+                        people = people - 1 / number_of_options
+                    
+                        x += 1
+                    else:
+                        print ("\nINVALID OPTION")
+                
+                x = 0
+                while people <= 6 and people > 5:
+                    print ("\nPerson #3")
+                    print ("Based on how much you would like to" , options[x] + ".") 
+                    print ("Enter a whole number scored 1-10")
+                    score = int(input("\n1-10 Score: "))
+                    if score >=1 and score <=10:
+                        score_3.append(score)
+                        people = people - 1 / number_of_options
+                    
+                        x += 1
+                    else:
+                        print ("\nINVALID OPTION")
+
+                x = 0
+                while people <= 5 and people > 4:
+                    print ("\nPerson #4")
+                    print ("Based on how much you would like to" , options[x] + ".") 
+                    print ("Enter a whole number scored 1-10")
+                    score = int(input("\n1-10 Score: "))
+                    if score >=1 and score <=10:
+                        score_4.append(score)
+                        people = people - 1 / number_of_options
+                    
+                        x += 1
+                    else:
+                        print ("\nINVALID OPTION")
+
+                x = 0
+                while people <= 4 and people > 3:
+                    print ("\nPerson #5")
+                    print ("Based on how much you would like to" , options[x] + ".") 
+                    print ("Enter a whole number scored 1-10")
+                    score = int(input("\n1-10 Score: "))
+                    if score >=1 and score <=10:
+                        score_5.append(score)
+                        people = people - 1 / number_of_options
+                    
+                        x += 1
+                    else:
+                        print ("\nINVALID OPTION")
+                x = 0
+                while people <= 3 and people > 2:
+                    print ("\nPerson #6")
+                    print ("Based on how much you would like to" , options[x] + ".") 
+                    print ("Enter a whole number scored 1-10")
+                    score = int(input("\n1-10 Score: "))
+                    if score >=1 and score <=10:
+                        score_6.append(score)
+                        people = people - 1 / number_of_options
+
+                        x += 1
+
+                    else:
+                        print ("\nINVALID OPTION")
+
+                x = 0
+                while people <= 2 and people > 1:
+                    print ("\nPerson #7")
+                    print ("Based on how much you would like to" , options[x] + ".") 
+                    print ("Enter a whole number scored 1-10")
+                    score = int(input("\n1-10 Score: "))
+                    if score >=1 and score <=10:
+                        score_7.append(score)
+                        people = people - 1 / number_of_options
+                    
+                        x += 1
+                        
+                    else:
+                        print ("\nINVALID OPTION")
+
+                x = 0
+                while people <= 1 and people > 0:
+                    print ("\nPerson #8")
+                    print ("Based on how much you would like to" , options[x] + ".") 
+                    print ("Enter a whole number scored 1-10")
+                    score = int(input("\n1-10 Score: "))
+                    if score >=1 and score <=10:
+                        score_8.append(score)
+                        people = people - 1 / number_of_options
+                    
+                        x += 1
+                        
+                    else:
+                        print ("\nINVALID OPTION")
+                # Now what we gotta do is add and state which has largest score maybe even 2nd and 3rd
+                
+                # not sure if theres a way to add them in the list this was the best i could come up with
+
+                x = 0 # because 0 is 1st in list
+                y = number_of_options - 1
+                normal_scores = []
+
+                if persons == 8:
+                    while x <= y:
+                        
+                        normal_score = score_1[x] + score_2[x] + score_3[x] + score_4[x] + score_5[x] + score_6[x] + score_7[x] + score_8[x]
+                        # on the line above i keep getting list index out of range errors and i dont know why
+                        # but i am pretty much out of time so i just have to turn it in
+                        normal_scores.append(normal_score)
+                        print (normal_scores)
+                        x += 1
+                    
+                elif persons == 7:
+                    while x <= y:
+                        
+                        normal_score = score_1[x] + score_2[x] + score_3[x] + score_4[x] + score_5[x] + score_6[x] + score_7[x]
+                        
+                        normal_scores.append(normal_score)
+                        print (normal_scores)
+                        x += 1
+                    
+                elif persons == 6:
+                    while x <= y:
+                        
+                        normal_score = score_1[x] + score_2[x] + score_3[x] + score_4[x] + score_5[x] + score_6[x]
+                        
+                        normal_scores.append(normal_score)
+                        print (normal_scores)
+                        x += 1
+                    
+                elif persons == 5:
+                    while x <= y:
+                        
+                        normal_score = score_1[x] + score_2[x] + score_3[x] + score_4[x] + score_5[x]
+                        
+                        normal_scores.append(normal_score)
+                        
+                        print (normal_scores)
+                        x += 1
+                                            
+                elif persons == 4:
+                    while x <= y:
+                        
+                        normal_score = score_1[x] + score_2[x] + score_3[x] + score_4[x]
+                        
+                        normal_scores.append(normal_score)
+                        
+                        print (normal_scores)
+                        x += 1
+                                            
+                elif persons == 3:
+                    while x <= y:
+                        
+                        normal_score = score_1[x] + score_2[x] + score_3[x]
+                        
+                        normal_scores.append(normal_score)
+                        
+                        print (normal_scores)
+                        x += 1
+                                        
+                elif persons == 2:
+                    while x <= y:
+                        print (x)
+                        print (score_1[x] + score_2[x])
+                        normal_score = score_1[x] + score_2[x]
+                        
+                        normal_scores.append(normal_score)
+                        
+                        print (normal_scores)
+                        x += 1
+                        
+                mode = 'rate'
+                
+
+            else:
+                print ("\nINVALID OPTION")
+
+        elif people == 0:
+            mode = 0
+        else:
+            print ("\nINVALID OPTION")
+            
+while mode == 'rate':
+    rate = int(input("\nPlease rate this program a whole number 1-5: "))
+    if rate == 5:
+        print ("Thanks.")
+        mode = 'end'
+    elif rate >= 5 and rate < 100:
+        print ("Much appreciated.")
+        mode = 'end'
+    elif rate >= 100 and rate < 1000:
+        print ("Greatly appreciated.")
+        mode = 'end'
+    elif rate >= 1000:
+        print ("Most appreciated.")
+        mode = 'end' # leads to no mode thus ending the program
+    else:
+        print ("Something went wrong please try adding" , 5 - rate , "to your awnser")
+        # there is the minus operater here to show you how to fix your rating
