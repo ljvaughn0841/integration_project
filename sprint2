@@ -1,0 +1,203 @@
+# Lou Vaughn
+# The purpose of this program is to assist decision making in groups
+
+'''
+it said to add a coment explaining some operaters so here we go
+
+for numeric operators
++ addition
+- subtraction
+* multiplication
+/ division
+% modulus aka remainder from long division
+** power or exponential
+// floor division aka intiger division
+
+for string operators
+* duplicate or repeat
++ just puts them together no spaces
+
+'''
+
+'''
+Main menu for selecting modes
+Future modes are random, random weight?, weighted, 0?, and weighted 0.
+0 would give the each player the ability to veto one option
+Weighted modes would use * instead of + to give higher numbers higher values.
+'''
+
+# just a side note i rewrote everything so there are less comments this time
+# todo probably should break down big functions into smaller specific functions
+# todo rewrite normal first, second third entirely
+
+# Normal Multiple Functions
+def normal_multiple_intro(people):
+    print("\nYou have selected", people, "people.")
+    print("If this is incorrect enter zero to go back.")
+    print("\nEnter up to 10 options separated by a comma then a space.")
+    print("Example: one, two, three, four")
+
+
+def normal_alone_intro():
+    import random
+    insult = random.randint(1, 10)  # picks 1 of 5 random insults
+    if insult == 1:
+        print("\nYou are alone")
+    elif insult == 2:
+        print("\nIt seems your alone poindexter.")
+    elif insult == 3:
+        print("\nYou are sad and alone.")
+    elif insult == 4:
+        print("\nYou have no friends.")
+    else:
+        print("\nThou art a single churlish half-faced mildewed-ear!")
+
+    print("If this is incorrect enter zero to go back.")
+    print("\nEnter up to 10 options separated by a comma then a space.")
+    print("Example: one, two, three, four")
+
+
+def normal_mode(people):
+    if people > 1:
+        normal_multiple_intro(people)
+    else:
+        normal_alone_intro()
+
+    options = input("\nOptions: ")
+    number_of_options = options.count(', ') + 1
+    if 10 >= number_of_options > 1:
+
+        delimiter = ', '
+        options = options.split(delimiter)
+        print(options)
+
+        score_list = []
+        list_list = []
+        final_normal_list = []
+        # This part gets scores for each person.
+        for person in range(1, people + 1):
+            for option in range(number_of_options):
+                print("\nPerson #", person, ".", sep='')
+                print("Based on how much you would like to",
+                      options[option] + ".")
+                print("Enter a whole number scored 1-10")
+                score = int(input("\n1-10 Score: "))
+
+                score_list.append(score)
+                print(score_list)
+            list_list.append(score_list)
+            print(list_list)
+            score_list = []
+        # This adds up all the columns.
+        for column in range(number_of_options):
+            final_normal_score = sum(row[column] for row in list_list)
+# https://stackoverflow.com/questions/15352457/how-can-i-sum-a-column-of-a-list
+# found out how to sum lists there ^
+
+            # adding up the scores into a list
+            final_normal_list.append(final_normal_score)
+
+        super_normal_list = final_normal_list.copy()
+        print(super_normal_list)
+        # super normal list is a copy that is used for finding options
+        # find which value is the maximum
+        normal_first = max(final_normal_list)
+        # remove first place to find second place
+        # remove found at https://www.w3schools.com/python/python_lists.asp
+        normal_second = normal_first
+        tie = False
+        while normal_first == normal_second and tie != True:  # does not =
+            # we briefly covered try in class
+            try:
+                normal_second = max(final_normal_list)
+            # except wouldn't work pycharm said finally and that worked
+            finally:
+                tie = True
+            final_normal_list.remove(normal_second)
+
+        # remove second place to find third place
+        normal_third = normal_second
+        tie = False
+        if number_of_options > 2:
+            while normal_second == normal_third and not tie:  # also does not =
+                try:
+                    normal_third = max(final_normal_list)
+                finally:
+                    tie = True
+                final_normal_list.remove(normal_third)
+
+        # find places corresponding option
+        final_normal_list = super_normal_list
+        print("\nIn first place")
+        first_places = super_normal_list.count(normal_first)
+        for x in range(first_places):
+            print(options[super_normal_list.index(normal_first) + x])
+            super_normal_list.remove(normal_first)
+        # todo fix first, second, third
+        # seems like first is always correct seccond goes to third unlesss
+        # third is tied for third in which case third is first
+        super_normal_list = final_normal_list
+        print("\nIn second place")
+        second_places = super_normal_list.count(normal_second)
+        for y in range(second_places):
+            print(options[super_normal_list.index(normal_second) + y])
+            super_normal_list.remove(normal_second)
+
+        super_normal_list = final_normal_list
+        if number_of_options > 2:
+            print("\nIn third place")
+            third_places = super_normal_list.count(normal_third)
+            for z in range(third_places):
+                print(options[super_normal_list.index(normal_third) + z])
+                super_normal_list.remove(normal_third)
+    else:
+        print("\nINVALID INPUT!")  # todo fix this so it doesnt skip to rate.
+
+
+mode = 0  # mode 0 is main menu
+
+while mode == 0:
+    print("\nGreetings, Welcome to the Decision Maker.")  # \n to add spacing
+    print("Please select a mode by entering it's corresponding number.")
+    print("1. Normal")
+
+    mode = input("\nMode: ")
+
+    if mode == '1':  # Normal Mode
+        while mode == '1':
+            print("\nYou have selected Normal Mode!")
+            print("Enter number of players. (Maximum of 8)")
+            print("To return to main menu enter 0.")
+            people = int(input("\nEnter number of people: "))
+
+            if 1 <= people <= 8:
+                normal_mode(people)
+
+            elif people == 0:
+                mode = 0
+            else:
+                print("\nINVALID INPUT!")
+            mode = 'rate'
+
+    else:
+        print("\nINVALID INPUT!")
+        mode = 0
+
+while mode == 'rate':
+    rate = int(input("\nPlease rate this program a whole number 1-5: "))
+    if rate == 5:
+        print("Thanks.")
+        mode = 'end'
+    elif rate >= 5 and rate < 100:
+        print("Much appreciated.")
+        mode = 'end'
+    elif rate >= 100 and rate < 1000:
+        print("Greatly appreciated.")
+        mode = 'end'
+    elif rate >= 1000:
+        print("Most appreciated.")
+        mode = 'end'  # leads to no mode thus ending the program
+    else:
+        print("Something went wrong please try adding", 5 - rate,
+              "to your awnser")
+        # there is the minus operater here to show you how to fix your rating
