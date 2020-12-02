@@ -1,0 +1,389 @@
+"""
+The purpose of this program is to assist in decision making primarily with
+small groups of people.
+"""
+__author__ = "Lou Vaughn"
+
+'''
+it said to add a comment explaining some operators so here we go
+
+for numeric operators
++ addition
+- subtraction
+* multiplication
+/ division
+% modulus aka remainder from long division
+** power or exponential
+// floor division aka integer division
+
+for string operators
+* duplicate or repeat
++ just puts them together no spaces
+
+'''
+
+
+# Normal Multiple Functions
+def multiple_intro(people):
+    """
+    The purpose of this function is to greet the number of users.
+    :param people: The number of people.
+    """
+    print("\nYou have selected", people, "people.")
+    print("If this is incorrect enter 0 to go back.")
+    print("\nEnter up to 10 options separated by a comma then a space.")
+    print("Example: one, two, three, four")
+
+
+def alone_intro():
+    """
+    The purpose of this function is to pick a random insult and poke at the
+    user for being alone instead of greeting them.
+    """
+    import random
+    insult = random.randint(1, 5)  # picks 1 of 5 random insults
+    if insult == 1:
+        print("\nYou are alone")
+    elif insult == 2:
+        print("\nIt seems your alone poindexter.")
+        # poindexter is an outdated word that essentially just means nerd
+    elif insult == 3:
+        print("\nYou are sad and alone.")
+    elif insult == 4:
+        print("\nYou have no friends.")
+    else:
+        print("\nThou art a single churlish half-faced mildewed-ear!")
+
+    print("If this is incorrect enter 0 to go back.")
+    print("\nEnter up to 10 options separated by a comma then a space.")
+    print("Example: one, two, three, four")
+
+
+def people_taker():
+    """
+    The purpose of this function is to have the user enter the number of
+    people there are between 1 and 8 or enter 0 to go back.
+    :return: The number of people between 1-8, or 0 if they go back.
+    """
+    people_taking = True
+    while people_taking:
+        print("\nEnter number of players. (Maximum of 8)")
+        print("To return to main menu enter 0.")
+        try:
+            people = int(input("\nEnter number of people: "))
+            if 0 <= people <= 8:
+                return people
+            else:
+                print("\nInvalid Input! Enter a number 1-8")
+        except ValueError:
+            print("\nYou did not enter an Integer.")
+
+
+def option_taker(people):
+    """
+    Takes up to 10 options entered
+    Recognizes the number of options entered by a ', '.
+
+    :param people: The number of people
+    :return:options (a list of options separated by ', ' and the
+    number_of_options if the player selects options if the player enters 0
+    as the options it returns that as options so they can go back
+    """
+    option_taking = True
+    while option_taking:
+        if people == 'N/A':
+            print(
+                "\nEnter up to 10 options separated by a comma then a space.")
+            print("Example: one, two, three, four")
+            pass
+        elif people > 1:
+            multiple_intro(people)
+        else:
+            alone_intro()
+
+        options = input("\nOptions: ")
+        number_of_options = options.count(', ') + 1
+        if 10 >= number_of_options > 1:
+
+            delimiter = ', '
+            options = options.split(delimiter)
+
+            # Blank Option Test
+            # programiz.com/python-programming/methods/built-in/any
+            # helped with any()
+            # https://stackoverflow.com/questions/2405292/check-if-string-
+            # contains-only-whitespace helped with str.isspace()
+            lil_blank_check = options.count('')
+            blank_check_list = []
+            for option in range(number_of_options):
+                blank_check = str.isspace(options[option])
+                blank_check_list.append(blank_check)
+
+            if any(blank_check_list) or lil_blank_check >= 1:
+                print("\nOne of your options is blank.")
+            else:
+                return options, number_of_options
+        elif number_of_options > 10:
+            print("You have selected too many options!")
+        elif options == '0':
+            return options
+        else:
+            print("\nYou have not entered any options!")
+            print("Try entering options in the proper format.")
+
+
+# There is no back option for these which could be annoying but with future
+# modes using 0 as an input for scores if the back feature is added here 0
+# should be changed to something like back or else it will get confusing.
+def score_taker(options, number_of_options, people):
+    """
+    The purpose of this functions is to take the scores from all the players.
+    It makes a list of one persons scores (score_list) and then makes a list of
+    those lists (list_list).
+    :param options:
+    :param number_of_options: The number of options selected.
+    :param people: The number of people playing.
+    :return: list of the score lists (list_list)
+    """
+    score_list = []
+    list_list = []
+    # This part gets scores for each person.
+    for person in range(1, people + 1):
+        for option in range(number_of_options):
+            score_taking = True
+            while score_taking:  # to make sure they enter 1-10 int
+                try:
+                    print("\nPerson #", person, ".", sep='')
+                    print("Based on how much you would like to",
+                          options[option] + ".")
+                    print("Enter a whole number scored 1-10")
+                    score = int(input("\n1-10 Score: "))
+                    if 1 <= score <= 10:
+                        score_list.append(score)
+
+                        score_taking = False
+                    else:
+                        print("\nYour score is not in range 1-10")
+                except ValueError:
+                    print("\nYou did not enter an Integer")
+
+        list_list.append(score_list)
+
+        score_list = []
+    return list_list
+
+
+def score_adder(list_list, number_of_options):
+    """
+    Used in modes like normal that add up the scores. It takes in the list
+    of the score lists and number of options. It takes the sum for each option
+    in the list and puts them in final_add_list.
+    :param list_list: List of the score lists.
+    :param number_of_options: The number of options.
+    :return: final_add_list which is the sum of the score lists
+    """
+    final_add_list = []
+    for column in range(number_of_options):
+        final_normal_score = sum(row[column] for row in list_list)
+        # https://stackoverflow.com/questions/15352457/how-can-i-sum-a-column-o
+        # f-a-list
+        # found out how to sum lists there ^ also about rows and columns
+
+        # adding up the scores into a list
+        final_add_list.append(final_normal_score)
+    return final_add_list
+
+
+def score_multiplier(list_list, number_of_options):
+    """
+    Used in modes like weighted to get the final score.
+    Multiplies the scores to get a final score.
+    It's main use is to prevent people from only putting 1's and 10's to get
+    what they want as mid and high values are worth more than low values.
+    It tries to balance what one person wants vs the group in this way.
+    :param list_list: List of the score lists.
+    :param number_of_options: The number of options.
+    :return: final_add_list which is the sum of the score lists
+    """
+    final_multiplied_list = []
+    for column in range(number_of_options):
+        # sum() doesnt exist for * (I think) so I modified it to this.
+        final_score = 1
+        for row in list_list:
+            final_score = row[column] * final_score
+
+        final_multiplied_list.append(final_score)
+    return final_multiplied_list
+
+
+def compare_final_scores(final_scores, options):
+    """
+    Compares the final scores to find the highest scoring option(s) and
+    sees if there are any ties. Prints a message depending on if theres a tie
+    for first or not then the first place scoring option(s).
+    :param final_scores: The final list of scores gained by whichever method.
+    :param options: The list of option names.
+    :return:
+    """
+    normal_first = max(final_scores)
+    comparison_list = final_scores.copy()
+    # find places corresponding option
+
+    first_places = comparison_list.count(normal_first)
+    if first_places == 1:
+        print("\nThe highest scoring option is...")
+    else:
+        print("\nThe tied highest scoring options are...")
+    for x in range(first_places):
+        print(options[comparison_list.index(normal_first) + x])
+        comparison_list.remove(normal_first)
+
+# There used to be second and third place as well but there were some bugs so
+# that feature had to be scrapped for now.
+
+
+def score_random(options, number_of_options):
+    """
+    Picks random winner.
+    :param options: List of option names.
+    :param number_of_options: The number of options.
+    """
+    import random
+    winner = random.randint(0, number_of_options - 1)
+
+    print(options[winner])
+
+
+def main():
+    """
+    This function is the main interface. It includes the main menu for
+    selecting modes, all the modes, the steps/structure, and the back feature.
+
+    Future modes are random, random weight?, weighted, 0?, and weighted 0.
+    0 would give the each player the ability to veto one option
+    """
+    mode = 0  # mode 0 is main menu
+    available_modes = [1, 2, 3]
+    while mode == 0:
+        print("\nGreetings, Welcome to the Decision Maker.")
+        print("Please select a mode by entering it's corresponding number.")
+        print("1. Normal")
+        print("2. Weighted")
+        print("3. Random")
+        try:
+            mode = int(input("\nMode: "))
+
+            if available_modes.count(mode) == 0:
+                print("\nInvalid Input!")
+                mode = 0
+
+        except ValueError:
+            print("\nInvalid Input!")
+
+        while mode == 1:  # Normal Mode
+            mode = 1.1  # step 1 take people
+            while mode == 1.1:  # these are so the 0 works so you can go back
+                print("\nYou have selected Normal Mode!")
+                people = people_taker()
+                if people == 0:
+                    mode = 0
+                else:
+                    mode = 1.2  # step 2 take a list of options
+                while mode == 1.2:
+                    if 1 <= people <= 8:
+                        # You wont return unless you have 1-8 or 0
+                        options_taken = option_taker(people)
+
+                        if options_taken == '0':
+                            mode = 1.1
+                        else:  # no need to go back anymore hence no more loops
+                            options = options_taken[0]
+                            number_of_options = options_taken[1]
+
+                            # returns a list of all score lists aka list_list
+                            scores = score_taker(options, number_of_options,
+                                                 people)
+
+                            final_scores = score_adder(scores,
+                                                       number_of_options)
+
+                            compare_final_scores(final_scores, options)
+                            mode = 'rate'
+                    else:
+                        mode = 1.1
+
+        while mode == 2:  # Weighted Mode
+            mode = 2.1  # step 1 take people
+            while mode == 2.1:  # these are so the 0 works so you can go back
+                print("\nYou have selected Weighted Mode!")
+                people = people_taker()
+                if people == 0:
+                    mode = 0
+                else:
+                    mode = 2.2  # step 2 take a list of options
+                while mode == 2.2:
+                    if 1 <= people <= 8:
+                        # You wont return unless you have 1-8 or 0
+                        options_taken = option_taker(people)
+
+                        if options_taken == '0':
+                            mode = 2.1
+                        else:  # no need to go back anymore hence no more loops
+                            options = options_taken[0]
+                            number_of_options = options_taken[1]
+
+                            # returns a list of all score lists aka list_list
+                            scores = score_taker(options, number_of_options,
+                                                 people)
+
+                            final_scores = score_multiplier(scores,
+                                                            number_of_options)
+
+                            compare_final_scores(final_scores, options)
+                            mode = 'rate'
+                    else:
+                        mode = 2.1
+
+        while mode == 3:  # Random Mode
+            people = 'N/A'
+            print("\nYou have selected Random Mode!")
+            print()
+            # The number of people is not needed except to enter option_taker
+            options_taken = option_taker(people)
+            if options_taken == '0':
+                mode = 0
+            else:
+                mode = 3.1
+
+            while mode == 3.1:
+                options = options_taken[0]
+                number_of_options = options_taken[1]
+                print("\nThe winner is...")
+                score_random(options, number_of_options)
+                again = input("\nEnter 0 to try again: ")
+                if again == '0':
+                    print("\nRetrying...")
+                else:
+                    mode = 'rate'
+
+    while mode == 'rate':
+        rate = int(input("\nPlease rate this program a whole number 1-5: "))
+        if rate == 5:
+            print("Thanks.")
+            mode = 'end'
+        elif rate >= 5 and rate < 100:  # The only and boolean operator.
+            print("Much appreciated.")
+            mode = 'end'
+        elif 100 <= rate < 1000:
+            print("Greatly appreciated.")
+            mode = 'end'
+        elif rate >= 1000:
+            print("Most appreciated.")
+            mode = 'end'  # leads to no mode thus ending the program
+        else:
+            print("Something went wrong please try adding at least", 5 - rate,
+                  "to your answer")
+            # there is the - operator here to show you how to fix your rating
+
+
+main()
